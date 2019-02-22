@@ -1,5 +1,7 @@
 package com.example.cristiangarcia.chat;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,12 +20,16 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Login extends AsyncTask<String, HashMap<String, String>, String> {
-    String adrecaURL;
-    HashMap<String, String> parametres;
+import static android.content.Context.MODE_PRIVATE;
 
-    protected Login(String adrecaURL, HashMap<String, String> parametres){
-        this.adrecaURL = adrecaURL;
+public class Login extends AsyncTask<String, HashMap<String, String>, String> {
+    Context context;
+    String adrecaURL = "http://iesmantpc.000webhostapp.com/public/login/";
+    HashMap<String, String> parametres;
+    SharedPreferences.Editor editor;
+
+    protected Login(HashMap<String, String> parametres, Context context){
+        this.context = context;
         this.parametres = parametres;
     }
 

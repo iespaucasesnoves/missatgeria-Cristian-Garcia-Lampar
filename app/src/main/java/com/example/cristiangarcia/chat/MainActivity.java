@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("nom", nombre.getText().toString());
                 hashMap.put("password", password.getText().toString());
-                Login l = new Login(url, hashMap);
+                Login l = new Login(hashMap, getBaseContext());
                 l.execute(url);
             }
         });
