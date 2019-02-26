@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -17,10 +19,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.net.ssl.HttpsURLConnection;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class Login extends AsyncTask<String, HashMap<String, String>, String> {
     Context context;
@@ -62,6 +62,23 @@ public class Login extends AsyncTask<String, HashMap<String, String>, String> {
                     resultat += line;
                 }
                 Log.i("ResConnectUtils", resultat);
+                Preferencies e = new Preferencies(context);
+                JSONObject object = new JSONObject(resultat);
+                String codiUsuari = object.getJSONObject("dades").getString("codiusuari");
+                String nomUsuari = object.getJSONObject("dades").getString("nom");
+                String tokenUsuari = object.getJSONObject("dades").getString("token");
+
+                e.setCodiusuari(Integer.parseInt(codiUsuari));
+                e.setUser(nomUsuari);
+                e.setPassword(parametres.get("password"));
+                e.setToken(tokenUsuari);
+
+
+                Log.i("CODIGO", String.valueOf(e.getCodiusuari()));
+                Log.i("NOMBRE", e.getUser());
+                Log.i("PASSWORD", e.getPassword());
+                Log.i("TOKEN", e.getToken());
+
             } else {
                 resultat = "";
                 Log.i("ResConnectUtils", "Errors:" + resposta);

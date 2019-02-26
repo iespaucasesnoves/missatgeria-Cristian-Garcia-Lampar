@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.passInput);
 
 
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
