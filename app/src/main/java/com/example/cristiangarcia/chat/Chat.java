@@ -3,7 +3,6 @@ package com.example.cristiangarcia.chat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -22,6 +21,9 @@ public class Chat extends AppCompatActivity {
     Button enviar;
     ListAdapter adapter;
     Mensajes m;
+    Enviar e;
+    HashMap<String, String> hashMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +33,18 @@ public class Chat extends AppCompatActivity {
         escribir = findViewById(R.id.texto_enviar);
         enviar = findViewById(R.id.btn_enviar);
         m = new Mensajes(this);
-        m.execute();
 
+        m.execute();
 
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(Chat.this, "" + escribir.getText(), Toast.LENGTH_SHORT).show();
+                hashMap = new HashMap<>();
+                hashMap.put("msg", escribir.getText().toString());
+                hashMap.put("codiusuari", "19");
+                e = new Enviar(hashMap, getBaseContext());
+                e.execute();
             }
         });
         mostraMensajes();
@@ -50,9 +57,9 @@ public class Chat extends AppCompatActivity {
         bd.open();
         // Obtenim tots els vins
         List<Mensaje> listaMensajes = bd.getAllMensaje();
-        ArrayList<HashMap<String, String>> llista = new ArrayList();
+        ArrayList<HashMap<String, String>> llista = new ArrayList<>();
         for (int i = 0; i < listaMensajes.size(); i++) {
-            HashMap<String, String> map = new HashMap();
+            HashMap<String, String> map = new HashMap<>();
             Mensaje mensaje = listaMensajes.get(i);
             //map.put("codigo", String.valueOf(mensaje.getCodigo()));
             map.put("mensaje", mensaje.getMensaje());
