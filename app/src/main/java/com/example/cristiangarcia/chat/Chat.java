@@ -2,21 +2,72 @@ package com.example.cristiangarcia.chat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Chat extends AppCompatActivity {
 
-    String url = "https://iesmantpc.000webhostapp.com/public/provamissatge/";
-    //{"codi":"105","msg":"hola\n","datahora":"2019-02-19 16:51:56","codiusuari":"19","nom":"GARCIA"}
-
     ListView lv;
+    EditText escribir;
+    Button enviar;
+    ListAdapter adapter;
+    Mensajes m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         lv = findViewById(R.id.lista);
-        
+        escribir = findViewById(R.id.texto_enviar);
+        enviar = findViewById(R.id.btn_enviar);
+        m = new Mensajes(this);
+        m.execute();
 
+
+        enviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Chat.this, "" + escribir.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        mostraMensajes();
+
+    }
+    public void mostraMensajes() {
+        // Obrim la base de dades
+        DataSourceMensajes bd;
+        bd = new DataSourceMensajes(this);
+        bd.open();
+        // Obtenim tots els vins
+        List<Mensaje> listaMensajes = bd.getAllMensaje();
+        ArrayList<HashMap<String, String>> llista = new ArrayList();
+        for (int i = 0; i < listaMensajes.size(); i++) {
+            HashMap<String, String> map = new HashMap();
+            Mensaje mensaje = listaMensajes.get(i);
+            //map.put("codigo", String.valueOf(mensaje.getCodigo()));
+            map.put("mensaje", mensaje.getMensaje());
+            map.put("fechahora", mensaje.getFechaHora());
+            map.put("nom", mensaje.getNombre());
+            //map.put("codigousuario", mensaje.getFKCodiUsuario());
+            //map.put("pendiente", mensaje.getPendiente());
+            llista.add(map);
+        }
+        //Tanquem la BD
+        bd.close();
+        //Assignar a la listview
+        adapter = new SimpleAdapter(this, llista, R.layout.mensaje,
+                new String[]{"mensaje", "fechahora"},
+                new int[]{R.id.mensaje, R.id.fecha});
+        lv.setAdapter(adapter);
     }
 }

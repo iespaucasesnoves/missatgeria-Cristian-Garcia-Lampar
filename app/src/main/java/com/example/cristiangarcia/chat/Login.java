@@ -1,6 +1,7 @@
 package com.example.cristiangarcia.chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -73,12 +74,16 @@ public class Login extends AsyncTask<String, HashMap<String, String>, String> {
                 e.setPassword(parametres.get("password"));
                 e.setToken(tokenUsuari);
 
+                Intent i = new Intent(context, Chat.class);
+                context.startActivity(i);
 
+
+/*
                 Log.i("CODIGO", String.valueOf(e.getCodiusuari()));
                 Log.i("NOMBRE", e.getUser());
                 Log.i("PASSWORD", e.getPassword());
                 Log.i("TOKEN", e.getToken());
-
+*/
             } else {
                 resultat = "";
                 Log.i("ResConnectUtils", "Errors:" + resposta);
