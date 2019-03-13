@@ -14,7 +14,7 @@ public class DataSourceMensajes {
     private HelperQuepassaeh dbAjuda; //CLASSE AJUDA
 
     private String[] allColumnsMensajes = {HelperQuepassaeh.COLUMN_CODI, HelperQuepassaeh.COLUMN_MSG, HelperQuepassaeh.COLUMN_DATAHORA,
-            HelperQuepassaeh.COLUMN_FKCODIUSUARI , HelperQuepassaeh.COLUMN_PENDENT};
+            HelperQuepassaeh.COLUMN_FKCODIUSUARI , HelperQuepassaeh.COLUMN_PENDENT, HelperQuepassaeh.COLUMN_NOM};
 
 
 
@@ -37,6 +37,7 @@ public class DataSourceMensajes {
         values.put(HelperQuepassaeh.COLUMN_DATAHORA, Mensaje.getFechaHora());
         values.put(HelperQuepassaeh.COLUMN_FKCODIUSUARI, Mensaje.getFKCodiUsuario());
         //values.put(HelperQuepassaeh.COLUMN_PENDENT, Mensaje.getPendiente());
+        values.put(HelperQuepassaeh.COLUMN_NOM, Mensaje.getNombre());
 
         long insertId = database.insert(HelperQuepassaeh.TABLE_MISSATGE, null, values);
         Mensaje.setCodigo(insertId);
@@ -64,6 +65,7 @@ public class DataSourceMensajes {
         v.setFechaHora(cursor.getString(2));
         v.setFKCodiUsuario(cursor.getString(3));
         v.setPendiente(cursor.getString(4));
+        v.setNombre(cursor.getString(5));
         return v;
     }
 }

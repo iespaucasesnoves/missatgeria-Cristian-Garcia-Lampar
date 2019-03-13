@@ -12,13 +12,9 @@ public class HelperQuepassaeh extends SQLiteOpenHelper {
     public static final String COLUMN_DATAHORA = "datahora";
     public static final String COLUMN_FKCODIUSUARI = "codiusuari";
     public static final String COLUMN_PENDENT = "pendent";
-    public static final String TABLE_USUARI = "usuari";
-    public static final String COLUMN_CODIUSUARI = "codiusuari";
     public static final String COLUMN_NOM = "nom";
-    public static final String COLUMN_EMAIL = "email";
-    public static final String COLUMN_FOTO = "foto";
     private static final String DATABASE_NAME = "quepassaeh.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_CREATE_MISSATGE = "create table "
             + TABLE_MISSATGE + "(" + COLUMN_CODI
             + " integer primary key, "
@@ -26,12 +22,7 @@ public class HelperQuepassaeh extends SQLiteOpenHelper {
             + COLUMN_DATAHORA + " text not null,"
             + COLUMN_FKCODIUSUARI + " integer not null,"
             + COLUMN_PENDENT + " integer default 0 not null,"
-            + "FOREIGN KEY(" + COLUMN_FKCODIUSUARI + ") REFERENCES " + TABLE_USUARI + "(" + COLUMN_CODIUSUARI + "))";
-    private static final String DATABASE_CREATE_USUARI = "create table "
-            + TABLE_USUARI + "(" + COLUMN_CODIUSUARI
-            + " integer primary key, "
-            + COLUMN_NOM + " text not null,"
-            + COLUMN_EMAIL + " text," + COLUMN_FOTO + " text)";
+            + COLUMN_NOM + " text not null)";
 
     public HelperQuepassaeh(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,7 +30,6 @@ public class HelperQuepassaeh extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(DATABASE_CREATE_USUARI);
         Log.i("QuePassaEh", DATABASE_CREATE_MISSATGE);
         database.execSQL(DATABASE_CREATE_MISSATGE);
     }
@@ -50,7 +40,6 @@ public class HelperQuepassaeh extends SQLiteOpenHelper {
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MISSATGE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARI);
         onCreate(db);
     }
 }

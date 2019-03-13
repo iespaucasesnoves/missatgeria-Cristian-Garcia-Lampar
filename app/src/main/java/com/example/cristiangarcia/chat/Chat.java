@@ -33,8 +33,9 @@ public class Chat extends AppCompatActivity {
         escribir = findViewById(R.id.texto_enviar);
         enviar = findViewById(R.id.btn_enviar);
         m = new Mensajes(this);
-
         m.execute();
+        bottomScroll();
+        mostraMensajes();
 
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,9 +46,11 @@ public class Chat extends AppCompatActivity {
                 hashMap.put("codiusuari", "19");
                 e = new Enviar(hashMap, getBaseContext());
                 e.execute();
+                bottomScroll();
+                mostraMensajes();
             }
         });
-        mostraMensajes();
+
 
     }
     public void mostraMensajes() {
@@ -73,8 +76,17 @@ public class Chat extends AppCompatActivity {
         bd.close();
         //Assignar a la listview
         adapter = new SimpleAdapter(this, llista, R.layout.mensaje,
-                new String[]{"mensaje", "fechahora"},
-                new int[]{R.id.mensaje, R.id.fecha});
+                new String[]{"mensaje", "fechahora", "nom"},
+                new int[]{R.id.mensaje, R.id.fecha, R.id.nombreUsuario});
         lv.setAdapter(adapter);
+    }
+    private void bottomScroll() {
+        lv.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                lv.setSelection(adapter.getCount() - 1);
+            }
+        });
     }
 }
