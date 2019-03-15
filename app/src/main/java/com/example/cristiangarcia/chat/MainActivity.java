@@ -13,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn;
     EditText nombre, password;
-    String url = "http://iesmantpc.000webhostapp.com/public/login/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 hashMap.put("nom", nombre.getText().toString());
                 hashMap.put("password", password.getText().toString());
                 Login l = new Login(hashMap, getBaseContext());
-                l.execute(url);
+                l.execute();
             }
         });
     }

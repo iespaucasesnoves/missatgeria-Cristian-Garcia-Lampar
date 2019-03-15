@@ -1,5 +1,6 @@
 package com.example.cristiangarcia.chat;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,13 @@ public class Chat extends AppCompatActivity {
     Enviar e;
     HashMap<String, String> hashMap;
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        handler.removeCallbacks(getResponceAfterInterval);
+        handler.post(getResponceAfterInterval);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +42,7 @@ public class Chat extends AppCompatActivity {
         enviar = findViewById(R.id.btn_enviar);
         m = new Mensajes(this);
         m.execute();
-        bottomScroll();
+
         mostraMensajes();
 
         enviar.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +54,7 @@ public class Chat extends AppCompatActivity {
                 hashMap.put("codiusuari", "19");
                 e = new Enviar(hashMap, getBaseContext());
                 e.execute();
-                bottomScroll();
+
                 mostraMensajes();
             }
         });
@@ -75,18 +83,23 @@ public class Chat extends AppCompatActivity {
         //Tanquem la BD
         bd.close();
         //Assignar a la listview
-        adapter = new SimpleAdapter(this, llista, R.layout.mensaje,
-                new String[]{"mensaje", "fechahora", "nom"},
-                new int[]{R.id.mensaje, R.id.fecha, R.id.nombreUsuario});
+        MsgAdapter adapter = new MsgAdapter(this, R.layout.activity_main, listaMensajes);
         lv.setAdapter(adapter);
+        adapter.addAll(listaMensajes);
+        adapter.notifyDataSetChanged();
     }
-    private void bottomScroll() {
-        lv.post(new Runnable() {
-            @Override
-            public void run() {
-                // Select the last row so it will scroll into view...
-                lv.setSelection(adapter.getCount() - 1);
+
+    private final Handler handler = new Handler();
+    private Runnable getResponceAfterInterval = new Runnable() {
+        public void run() {
+            try
+            {
+                mostraMensajes(); //Descarrega els missatges els guarda dins la
+//base de dades i els mostra a la llista.
+            } catch (Exception e) {
             }
-        });
-    }
+            handler.postDelayed(this, 1000*60);
+        }
+    };
+
 }

@@ -28,7 +28,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Mensajes extends AsyncTask<String, HashMap<String, String>, String> {
     Context context;
-    String adrecaURL = "http://iesmantpc.000webhostapp.com/public/provamissatge/";
+    String adrecaURL = "http://iesmantpc.000webhostapp.com/public/provamissatge/19";
     HashMap<String, String> parametres;
     SharedPreferences.Editor editor;
     DataSourceMensajes dsm = new DataSourceMensajes(context);
